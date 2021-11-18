@@ -2,13 +2,16 @@ import { mehlstaubNeinDanke } from "./mehlstaubNeinDanke";
 import { gewaltAmArbeitsplatz } from "./gewaltAmArbeitsplatz";
 import { ladungssicherung } from "./ladungssicherung";
 import { personalhygiene } from "./personalhygiene"
+// import { dataExampleInstruction } from "./dataExampleInstruction";
+// import { dataExampleVideo } from "./dataExampleVideo";
 
 export const dataSet = [
   personalhygiene,
   mehlstaubNeinDanke, 
   gewaltAmArbeitsplatz,
   ladungssicherung,
-
+  // dataExampleInstruction,
+  // dataExampleVideo
 ]
 
 export const anleitung = {

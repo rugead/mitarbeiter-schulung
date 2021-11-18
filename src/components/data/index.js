@@ -1,13 +1,13 @@
-import { MehlstaubNeinDanke } from "./MehlstaubNeinDanke";
-import { GewaltAmArbeitsplatz } from "./GewaltAmArbeitsplatz";
-import { Ladungssicherung } from "./Ladungssicherung";
-import { Personalhygiene } from "./Personalhygiene"
+import { mehlstaubNeinDanke } from "./mehlstaubNeinDanke";
+import { gewaltAmArbeitsplatz } from "./gewaltAmArbeitsplatz";
+import { ladungssicherung } from "./ladungssicherung";
+import { personalhygiene } from "./personalhygiene"
 
 export const dataSet = [
-  Personalhygiene,
-  MehlstaubNeinDanke, 
-  GewaltAmArbeitsplatz,
-  Ladungssicherung,
+  personalhygiene,
+  mehlstaubNeinDanke, 
+  gewaltAmArbeitsplatz,
+  ladungssicherung,
 
 ]
 

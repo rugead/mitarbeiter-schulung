@@ -77,23 +77,23 @@ export const Quiz = (props) => {
   }
 
   const lessonProps = {
-    url: videoJsOptions.sources[0].src,
-    title: videoJsOptions.title,
-    source: videoJsOptions.sources,
-    personalnummer: personalnummer,
-    username: user.username ? user.username : user.email,
-    userId: user.uid,
-    createdAt: new Date(Date.now()),
-    frage1: {
-      frage1: videoJsOptions.frage1,
-      valueQ1,
-      antwort1,
-    },
-    frage2: { 
-      frage2: videoJsOptions.frage2, 
-      valueQ2,
-      antwort2,      
-    }
+    // url: videoJsOptions.sources[0].src,
+    title: title,
+    // source: videoJsOptions.sources,
+    // personalnummer: personalnummer,
+    // username: user.username ? user.username : user.email,
+    // userId: user.uid,
+    // createdAt: new Date(Date.now()),
+    // frage1: {
+    //   frage1: videoJsOptions.frage1,
+    //   valueQ1,
+    //   antwort1,
+    // },
+    // frage2: { 
+    //   frage2: videoJsOptions.frage2, 
+    //   valueQ2,
+    //   antwort2,      
+    // }
   };
 
   const submitConfirmation = () => {

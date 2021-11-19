@@ -15,6 +15,7 @@ export const dataSet = [
 ]
 
 
+
 export const anleitung = {
   instruction: {
     de: 'Bitte lesen Sie die Betriebsanweisung aufmerksam und bis zu Ende durch. Scrollen Sie bis nach ganz unten und klicken dann auf den Button "Zum Quiz hier klicken". Beantworten Sie dort alle Fragen und folgen Sie den weiteren Anweisungen.',

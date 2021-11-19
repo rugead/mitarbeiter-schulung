@@ -1,27 +1,34 @@
 import React, { useEffect, useState }  from 'react';
 import { useParams } from 'react-router';
+import {  useUser } from '../../firebase'
+
 import { dataSet} from "../data/"
 import { QuizArea, ScoreArea } from './QuizFunctions';
 import { H4} from '../Headline'
 
 export const Quiz = (props) => {
+  const { user } = useUser()
   const { indexOfItem} = useParams()
-   
+  
   const [currentQuestion, setCurrentQuestion] = useState(0)
   const [correctScore, setCorrectScore] = useState(0)
   const [incorrectScore, setIncorrectScore] = useState(0)
   const [clickedAnswers, setClickedAnswers] = useState({})
   const title = dataSet[indexOfItem].title
+
   const questions = dataSet[indexOfItem].questions
   const question = questions[currentQuestion]
-
+  
   
   console.log(
+    'courseId: ', dataSet[indexOfItem].courseId,
+    'user uid: ', user.email,
     'clickedAnswers: ', clickedAnswers, 
     'current: ', currentQuestion,  
     'QuestionLength: ', questions.length, 
     'false: ', incorrectScore, 
-    'true: ', correctScore
+    'true: ', correctScore,
+    'title: ', title,
     );
   
   useEffect(() => {
@@ -77,36 +84,29 @@ export const Quiz = (props) => {
   }
 
   const lessonProps = {
-    // url: videoJsOptions.sources[0].src,
     title: title,
-    // source: videoJsOptions.sources,
-    // personalnummer: personalnummer,
-    // username: user.username ? user.username : user.email,
-    // userId: user.uid,
-    // createdAt: new Date(Date.now()),
-    // frage1: {
-    //   frage1: videoJsOptions.frage1,
-    //   valueQ1,
-    //   antwort1,
-    // },
-    // frage2: { 
-    //   frage2: videoJsOptions.frage2, 
-    //   valueQ2,
-    //   antwort2,      
-    // }
+    courseId: dataSet[indexOfItem].courseId,
+    category: dataSet[indexOfItem].categories,
+    showing: dataSet[indexOfItem].showing,
+    personalnummer: 'personalnummer',
+    userDisplayName: user.displayName,
+    userId: user.uid,
+    userEmail: user.email,
+    createdAt: new Date(Date.now()),
+
   };
 
   const submitConfirmation = () => {
 
-    firestore.collection("lessons").add(lessonProps)
-      .then(function(docRef){
-        setHelperText('')
-        setError(false)
-        setDialogOpen(true)
-      })
-      .catch(function(error){
+    // firestore.collection("lessons").add(lessonProps)
+    //   .then(function(docRef){
+    //     setHelperText('')
+    //     setError(false)
+    //     setDialogOpen(true)
+    //   })
+    //   .catch(function(error){
         
-      });
+    //   });
   }
 
   return(

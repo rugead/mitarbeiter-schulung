@@ -76,6 +76,39 @@ export const Quiz = (props) => {
       setClickedAnswers({})
   }
 
+  const lessonProps = {
+    url: videoJsOptions.sources[0].src,
+    title: videoJsOptions.title,
+    source: videoJsOptions.sources,
+    personalnummer: personalnummer,
+    username: user.username ? user.username : user.email,
+    userId: user.uid,
+    createdAt: new Date(Date.now()),
+    frage1: {
+      frage1: videoJsOptions.frage1,
+      valueQ1,
+      antwort1,
+    },
+    frage2: { 
+      frage2: videoJsOptions.frage2, 
+      valueQ2,
+      antwort2,      
+    }
+  };
+
+  const submitConfirmation = () => {
+
+    firestore.collection("lessons").add(lessonProps)
+      .then(function(docRef){
+        setHelperText('')
+        setError(false)
+        setDialogOpen(true)
+      })
+      .catch(function(error){
+        
+      });
+  }
+
   return(
     <div className="flex justify-around">  
       <div className="w-5/6">
@@ -119,7 +152,7 @@ export const Quiz = (props) => {
           </div>
           { (questions.length === correctScore) ?
             <div
-              className="p-3  ml-3 flex-1 text-primary hover:bg-primary text-lg font-medium text-center mt-5  border border-primary cursor-pointer hover:text-gray-100 rounded-md" 
+              className="p-3  ml-3 flex-1 text-white hover:bg-primary bg-green-500 text-lg font-medium text-center mt-5  border border-gray-500 cursor-pointer hover:text-gray-100 rounded-md" 
               // onClick={()=> submitConfirmation()}
             >
               submitConfirmation

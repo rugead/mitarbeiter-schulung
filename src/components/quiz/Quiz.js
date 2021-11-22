@@ -9,7 +9,6 @@ import { H4} from '../Headline'
 export const Quiz = (props) => {
   const { user } = useUser()
   const { indexOfItem} = useParams()
-  
   const [currentQuestion, setCurrentQuestion] = useState(0)
   const [correctScore, setCorrectScore] = useState(0)
   const [incorrectScore, setIncorrectScore] = useState(0)
@@ -97,6 +96,20 @@ export const Quiz = (props) => {
   };
 
   const submitConfirmation = () => {
+
+
+    // Create our initial doc
+db.collection("users").doc("frank").set({
+  name: "Frank",
+  favorites: {
+    food: "Pizza",
+    color: "Blue",
+    subject: "Recess"
+  },
+  age: 12
+}).then(function() {
+  console.log("Frank created");
+});
 
     // firestore.collection("lessons").add(lessonProps)
     //   .then(function(docRef){

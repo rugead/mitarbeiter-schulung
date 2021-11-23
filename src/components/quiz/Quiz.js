@@ -87,7 +87,8 @@ export const Quiz = (props) => {
     courseId: dataSet[indexOfItem].courseId,
     category: dataSet[indexOfItem].categories,
     showing: dataSet[indexOfItem].showing,
-    personalnummer: 'personalnummer',
+    personalnummer_user: 'personalnummer',
+    personalnummer_confirmation: 'personalnummer',
     userDisplayName: user.displayName,
     userId: user.uid,
     userEmail: user.email,
@@ -99,17 +100,17 @@ export const Quiz = (props) => {
 
 
     // Create our initial doc
-db.collection("users").doc("frank").set({
-  name: "Frank",
-  favorites: {
-    food: "Pizza",
-    color: "Blue",
-    subject: "Recess"
-  },
-  age: 12
-}).then(function() {
-  console.log("Frank created");
-});
+// db.collection("users").doc("frank").set({
+//   name: "Frank",
+//   favorites: {
+//     food: "Pizza",
+//     color: "Blue",
+//     subject: "Recess"
+//   },
+//   age: 12
+// }).then(function() {
+//   console.log("Frank created");
+// });
 
     // firestore.collection("lessons").add(lessonProps)
     //   .then(function(docRef){

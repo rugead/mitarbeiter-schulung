@@ -19,6 +19,7 @@ export const SignUp = () => {
   const [passwordConfirm, setPasswordConfirm] = useState('')
   const [email, setEmail] = useState('')
   const [name, setName] = useState('')
+  const [personalnummer, setPersonalnummer] = useState('')
   
 
 
@@ -30,6 +31,7 @@ export const SignUp = () => {
     if (name === "password") setPassword(value)
     if (name === "passwordConfirm") setPasswordConfirm(value)
     if (name === "name") setName(value)
+    if (name === "personalnummer") setPersonalnummer(value)
   }
   
   
@@ -43,8 +45,8 @@ export const SignUp = () => {
     }
     createUserWithEmailAndPassword(auth, email, password)
     .then(() => sendEmailVerification( auth.currentUser ))
-    .then(() => updateProfile(auth.currentUser, {displayName: name})
-    .then(() => createUserData(auth.currentUser))
+    .then(() => updateProfile(auth.currentUser, {displayName: name, personalnummer})
+    .then(() => createUserData(auth.currentUser, {personalnummer}))
     )
     .catch((err) => {
       setDialogTitle('Sign up error')
@@ -62,6 +64,7 @@ export const SignUp = () => {
           <H1>SignUp</H1>
           <form >
             <InputField label="Name" type="text" name="name" placeholder="Name" onChange={onChangeHandler} />
+            <InputField label="Personalnummer" type="text" name="personalnummer" placeholder="Personalnummer" onChange={onChangeHandler} />
             <InputField label="Email" type="email" name="email" placeholder="email" onChange={onChangeHandler} />
             <InputField label="Password" type="password" name="password" placeholder="password" onChange={onChangeHandler} />
             <InputField label="Password Confirmation" type="password" name="passwordConfirm" placeholder="password confirmation" onChange={onChangeHandler} />

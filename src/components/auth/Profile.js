@@ -8,14 +8,18 @@ export const Profile = () => {
   const { user } = useUser()
   
   const [isOpen, setIsOpen] = useState(false)
+  
   const [displayName, setDisplayName] = useState('')
   const [disableDisplayName, setDisableDisplayName] = useState(true)
   const [disableEmail, setDisableEmail] = useState(true)
+  const [disablePersonalnummer, setDisablePersonalnummer] = useState(true)
   const [disablePasswordReset, setDisablePasswordReset] = useState(true)
+
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [newPassword, setNewPassword] = useState('')
   const [newPasswordConfirm, setNewPasswordConfirm] = useState('')
+  const [personalnummer, setPersonalnummer] = useState('')
   
   const credential = EmailAuthProvider.credential(
     user.email,
@@ -26,8 +30,9 @@ export const Profile = () => {
     ev.preventDefault()
 
     updateProfile(user, { displayName: displayName })
-    .then(() => updateUserData(user, {name: displayName}))
-    .then(() => setDisableDisplayName(!disableDisplayName))
+    .then(() => updateUserData(user, {name: displayName, personalnummer: personalnummer}))
+    .then(() => setDisableDisplayName(true))
+    .then(() => setDisablePersonalnummer(true)) 
     .catch((err) => {
       alert(err)
     });
@@ -68,6 +73,7 @@ export const Profile = () => {
     if(name === 'password') setPassword(value)
     if(name === 'newPassword') setNewPassword(value)
     if(name === 'newPasswordConfirm') setNewPasswordConfirm(value)
+    if(name === 'personalnummer') setPersonalnummer(value)
   }
   
   const toggleDisabledInput = (ev) => {
@@ -76,11 +82,13 @@ export const Profile = () => {
     if(name === 'disableDisplayName') setDisableDisplayName(!disableDisplayName)
     if(name === 'disableEmail') setDisableEmail(!disableEmail)
     if (name === 'disablePasswordReset') setDisablePasswordReset(!disablePasswordReset)
+    if (name === 'disablePersonalnummer') setDisablePersonalnummer(!disablePersonalnummer)
   }
 
   useEffect(() => {
     setDisplayName(user.displayName || '')
     setEmail(user.email || '')
+    // setPersonalnummer()
   }, [user])
   
   return ( 
@@ -121,6 +129,42 @@ export const Profile = () => {
                 <button className="p-2  select-none border border-gray-300 rounded-md bg-green-300" name="disableDisplayName" onClick={(ev) => updateGoogleProfile(ev)}>Save</button>
               }
             </div>
+
+            <label htmlFor="displayName" className="pl-3 flex-shrink w-60 ">
+                <span className="">Personalnummer: </span>
+              </label>
+
+              <div className="pl-3 pb-5 flex items-start">
+                <input 
+                  type="text" 
+                  className="p-2 bg-green-100 w-full disabled:bg-gray-100 text-black disabled:text-gray-400 border border-gray-300 rounded-md"
+                  name="personalnummer" 
+                  value={personalnummer}
+                  id="personalnummer"
+                  onChange={ev => onChangeHandler(ev)} 
+                  disabled={disablePersonalnummer} 
+                />
+           
+              {disablePersonalnummer
+                ?
+                <button 
+                  className="ml-2 p-2 border border-gray-300 rounded-md" 
+                  name="disablePersonalnummer" 
+                  onClick={(ev) => toggleDisabledInput(ev)}
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" viewBox="0 0 20 20" fill="currentColor"> 
+                    <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
+                  </svg>
+                </button>
+                :
+                <button className="p-2  select-none border border-gray-300 rounded-md bg-green-300" name="disablePersonalnummer" onClick={(ev) => updateGoogleProfile(ev)}>Save</button>
+              }
+            </div>
+
+
+
+
+
 
             <label htmlFor="displayName" className="pl-3 flex-shrink w-40 ">
               <span className="">Email: </span>

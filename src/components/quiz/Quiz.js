@@ -1,6 +1,6 @@
 import React, { useEffect, useState }  from 'react';
 import { useParams } from 'react-router';
-import { getDoc, doc, serverTimestamp } from '@firebase/firestore';
+import { getDoc, doc, collection, addDoc, serverTimestamp } from '@firebase/firestore';
 
 import {  useUser, db } from '../../firebase'
 // import { getUserData } from '../user';
@@ -104,8 +104,8 @@ export const Quiz = (props) => {
     courseId: dataSet[indexOfItem].courseId,
     category: dataSet[indexOfItem].categories,
     showing: dataSet[indexOfItem].showing,
-    personalnummer_user: 'personalnummer',
-    personalnummer_confirmation: 'personalnummer',
+    personalnummer_user: 'personalnummer-u',
+    personalnummer_confirmation: 'personalnummer-c',
     userDisplayName: user.displayName,
     userId: user.uid,
     userEmail: user.email,
@@ -113,35 +113,9 @@ export const Quiz = (props) => {
 
   };
 
-  const submitConfirmation = () => {
-    // Create our initial doc
-    db.colleczion("lessons").add
-    const docRef = await addDoc(collection(db, "cities"), {
-      name: "Tokyo",
-      country: "Japan"
-    });
-    console.log("
-    // db.collection("users").doc("frank").set({
-//   name: "Frank",
-//   favorites: {
-//     food: "Pizza",
-//     color: "Blue",
-//     subject: "Recess"
-//   },
-//   age: 12
-// }).then(function() {
-//   console.log("Frank created");
-// });
-
-    // firestore.collection("lessons").add(lessonProps)
-    //   .then(function(docRef){
-    //     setHelperText('')
-    //     setError(false)
-    //     setDialogOpen(true)
-    //   })
-    //   .catch(function(error){
-        
-    //   });
+  const submitConfirmation = async () => {
+    const docRef = await addDoc(collection(db, "lessons"), lessonProps);
+    console.log('docRef: ', docRef);
   }
 
   return(

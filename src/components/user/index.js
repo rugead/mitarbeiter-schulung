@@ -1,13 +1,14 @@
 
-import { setDoc, getDoc, doc, serverTimestamp, updateDoc } from '@firebase/firestore';
+import { setDoc, doc, serverTimestamp, updateDoc } from '@firebase/firestore';
 import { db } from '../../firebase'
 
-export const createUserData = async (user) => {
+export const createUserData = async (user, personalnummer) => {
   if (!user) return
   const docRef = await doc(db, "users", user.uid)
 
   if (!docRef.exists){
     const payload = {
+      personalnummer,
       name: user.displayName,
       email: user.email, 
       role: ['student'],
@@ -24,6 +25,7 @@ export const updateUserData = async (user, userData) => {
 
   if (!docRef.exists){
     const payload = {
+      personalnummer: userData.personalnummer,
       name: user.displayName,
       email: user.email, 
       role: ['student'],

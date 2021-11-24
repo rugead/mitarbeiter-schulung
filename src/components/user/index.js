@@ -1,5 +1,5 @@
 
-import { setDoc, doc, serverTimestamp, updateDoc } from '@firebase/firestore';
+import { setDoc, getDoc, doc, serverTimestamp, updateDoc } from '@firebase/firestore';
 import { db } from '../../firebase'
 
 export const createUserData = async (user) => {
@@ -36,3 +36,10 @@ export const updateUserData = async (user, userData) => {
     .catch((err) => alert(err))
   }
 }
+
+// export const  getUserData = async (user) => {
+//   const docRef = doc(db, "users", user.uid)
+//   const docSnap = await getDoc(docRef);
+//   const userData= docSnap ? docSnap.data() :  console.log("No such document!")
+//   console.log('userData: ', userData);
+// } 

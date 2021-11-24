@@ -1,7 +1,9 @@
 import React, { useEffect, useState }  from 'react';
 import { useParams } from 'react-router';
-import {  useUser } from '../../firebase'
+import { getDoc, doc, serverTimestamp } from '@firebase/firestore';
 
+import {  useUser, db } from '../../firebase'
+// import { getUserData } from '../user';
 import { dataSet} from "../data/"
 import { QuizArea, ScoreArea } from './QuizFunctions';
 import { H4} from '../Headline'
@@ -13,15 +15,19 @@ export const Quiz = (props) => {
   const [correctScore, setCorrectScore] = useState(0)
   const [incorrectScore, setIncorrectScore] = useState(0)
   const [clickedAnswers, setClickedAnswers] = useState({})
+  
+  const [userData, setUserData] =useState()
   const title = dataSet[indexOfItem].title
-
+  
   const questions = dataSet[indexOfItem].questions
   const question = questions[currentQuestion]
   
   
   console.log(
+    'userData: ', userData,
     'courseId: ', dataSet[indexOfItem].courseId,
-    'user uid: ', user.email,
+    'user email: ', user.email,
+    'user UID:', user.uid,
     'clickedAnswers: ', clickedAnswers, 
     'current: ', currentQuestion,  
     'QuestionLength: ', questions.length, 
@@ -29,6 +35,17 @@ export const Quiz = (props) => {
     'true: ', correctScore,
     'title: ', title,
     );
+
+  useEffect(() =>{
+    const getUserData = async () => {
+      const docRef = doc(db, "users", user.uid)
+      const docSnap = await getDoc(docRef);
+      const userDoc = docSnap ? docSnap.data() :  console.log("No such document!")
+      setUserData(userDoc)
+    } 
+    getUserData()
+
+  }, [user])
   
   useEffect(() => {
     let correct = 0 
@@ -97,10 +114,14 @@ export const Quiz = (props) => {
   };
 
   const submitConfirmation = () => {
-
-
     // Create our initial doc
-// db.collection("users").doc("frank").set({
+    db.colleczion("lessons").add
+    const docRef = await addDoc(collection(db, "cities"), {
+      name: "Tokyo",
+      country: "Japan"
+    });
+    console.log("
+    // db.collection("users").doc("frank").set({
 //   name: "Frank",
 //   favorites: {
 //     food: "Pizza",
@@ -167,7 +188,7 @@ export const Quiz = (props) => {
           { (questions.length === correctScore) ?
             <div
               className="p-3  ml-3 flex-1 text-white hover:bg-primary bg-green-500 text-lg font-medium text-center mt-5  border border-gray-500 cursor-pointer hover:text-gray-100 rounded-md" 
-              // onClick={()=> submitConfirmation()}
+              onClick={()=> submitConfirmation()}
             >
               submitConfirmation
             </div>

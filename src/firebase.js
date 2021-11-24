@@ -1,6 +1,6 @@
 import { getAuth, onAuthStateChanged } from '@firebase/auth'
 import { initializeApp } from 'firebase/app'
-import { doc, getDoc, getFirestore } from 'firebase/firestore'
+import {  getFirestore } from 'firebase/firestore'
 import { useState, useEffect, useContext, createContext } from 'react'
 
 export const firebaseApp = initializeApp({
@@ -34,13 +34,13 @@ export const AuthContextProvider = props => {
 
 export function useUser() {
   const {user, error} = useContext(AuthContext)
-  const docRef = doc((getFirestore(), "users", user.id))
-  const docSnap =  getDoc(docRef);
-  const userData= docSnap.exists() ? docSnap.data() :  console.log("No such document!")
-  console.log('userData: ', userData);
+  // const docRef = doc((getFirestore(), "users", user.id))
+  // const docSnap =  getDoc(docRef);
+  // const userData= docSnap.exists() ? docSnap.data() :  console.log("No such document!")
+  // console.log('userData: ', userData);
 
   // console.log('useCurrentUser firebase: ', user, error)
-  return { user, error, userData }
+  return { user, error }
 }
 
 

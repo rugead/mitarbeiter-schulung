@@ -34,14 +34,7 @@ export const updateUserData = async (user, userData) => {
     setDoc(docRef, payload)
     .catch((err) => alert(err))
   } else {
-    updateDoc(doc, ...userData)
+    updateDoc(docRef, ...userData)
     .catch((err) => alert(err))
   }
 }
-
-// export const  getUserData = async (user) => {
-//   const docRef = doc(db, "users", user.uid)
-//   const docSnap = await getDoc(docRef);
-//   const userData= docSnap ? docSnap.data() :  console.log("No such document!")
-//   console.log('userData: ', userData);
-// } 

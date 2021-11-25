@@ -18,32 +18,31 @@ export const AuthContext = createContext()
 export const AuthContextProvider = props => {
   const [user, setUser] = useState()
   const [error, setError] = useState()
-  const [userData, setUserData]= useState()
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(getAuth(), setUser, setUserData, setError)
+    const unsubscribe = onAuthStateChanged(getAuth(), setUser, setError)
+  
     return () => unsubscribe()
   }, [user])
-  
-  return <AuthContext.Provider value={{ user, userData, error }} {...props} />
+
+  // useEffect(() => {
+  //   const getUserData = async () => {
+  //     if (!user) return 
+  //     const docRef = doc(db, "users", user.uid)
+  //     const docSnap = await getDoc(docRef);
+  //     const userDoc = docSnap.data()
+  //     setUserData(userDoc)        
+  //     }
+  //     return () => getUserData()
+  // }, [user])
+
+
+  return <AuthContext.Provider value={{ user, error }} {...props} />
 }
-
-
-
-
-
 
 export function useUser() {
-  const {user, userData, error} = useContext(AuthContext)
-  // const docRef = doc((getFirestore(), "users", user.id))
-  // const docSnap =  getDoc(docRef);
-  // const userData= docSnap.exists() ? docSnap.data() :  console.log("No such document!")
-  // console.log('userData: ', userData);
-
-  // console.log('useCurrentUser firebase: ', user, error)
-  return { user, error, userData }
+  const {user, error} = useContext(AuthContext)
+  return { user, error}
 }
-
-
 
 export const db = getFirestore()

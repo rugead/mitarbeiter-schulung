@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { useUser } from '../../firebase'
+import { useUser,db } from '../../firebase'
+import { getDoc, doc } from '@firebase/firestore';
 import { updateEmail, updateProfile, updatePassword, EmailAuthProvider, reauthenticateWithCredential  } from '@firebase/auth';
 import { DialogOverlay } from '../DialogOverlay';
 import { updateUserData } from '../user';
 
 export const Profile = () => {
   const { user } = useUser()
+  const [userData, setUserData]= useState()
+  console.log('userData: ', userData);
   
   const [isOpen, setIsOpen] = useState(false)
   
@@ -14,7 +17,7 @@ export const Profile = () => {
   const [disableEmail, setDisableEmail] = useState(true)
   const [disablePersonalnummer, setDisablePersonalnummer] = useState(true)
   const [disablePasswordReset, setDisablePasswordReset] = useState(true)
-
+  
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [newPassword, setNewPassword] = useState('')
@@ -24,8 +27,9 @@ export const Profile = () => {
   const credential = EmailAuthProvider.credential(
     user.email,
     password
-    )
+  )
     
+
   const updateGoogleProfile = (ev) => {
     ev.preventDefault()
 
@@ -86,10 +90,22 @@ export const Profile = () => {
   }
 
   useEffect(() => {
+    const getUserData = async () => {
+      if (!user) return 
+      const docRef = doc(db, "users", user.uid)
+      const docSnap = await getDoc(docRef);
+      const userDoc = docSnap.data()
+      setUserData(userDoc)        
+      }
+     getUserData()
+  }, [user])
+
+  
+  useEffect(() => {
     setDisplayName(user.displayName || '')
     setEmail(user.email || '')
-    // setPersonalnummer()
-  }, [user])
+    setPersonalnummer(userData?.personalnummer || '')
+  }, [user, userData])
   
   return ( 
     <div className="flex justify-center">      

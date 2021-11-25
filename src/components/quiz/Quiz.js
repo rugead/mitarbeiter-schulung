@@ -10,13 +10,15 @@ import { H4} from '../Headline'
 
 export const Quiz = (props) => {
   const { user } = useUser()
+  const [userData, setUserData]= useState()
+  console.log('userData: ', userData);
   const { indexOfItem} = useParams()
   const [currentQuestion, setCurrentQuestion] = useState(0)
   const [correctScore, setCorrectScore] = useState(0)
   const [incorrectScore, setIncorrectScore] = useState(0)
   const [clickedAnswers, setClickedAnswers] = useState({})
   
-  const [userData, setUserData] =useState()
+  // const [userData, setUserData] =useState()
   const title = dataSet[indexOfItem].title
   
   const questions = dataSet[indexOfItem].questions
@@ -36,16 +38,16 @@ export const Quiz = (props) => {
     'title: ', title,
     );
 
-  useEffect(() =>{
-    const getUserData = async () => {
-      const docRef = doc(db, "users", user.uid)
-      const docSnap = await getDoc(docRef);
-      const userDoc = docSnap ? docSnap.data() :  console.log("No such document!")
-      setUserData(userDoc)
-    } 
-    getUserData()
-
-  }, [user])
+    useEffect(() => {
+      const getUserData = async () => {
+        if (!user) return 
+        const docRef = doc(db, "users", user.uid)
+        const docSnap = await getDoc(docRef);
+        const userDoc = docSnap.data()
+        setUserData(userDoc)        
+        }
+       getUserData()
+    }, [user])
   
   useEffect(() => {
     let correct = 0 
@@ -110,7 +112,7 @@ export const Quiz = (props) => {
     userId: user.uid,
     userEmail: user.email,
     createdAt: new Date(Date.now()),
-    Timestamp: Timestamp.fromDate(new Date.now()),
+    Timestamp: Timestamp.fromDate(new Date(Date.now())),
   };
 
   const submitConfirmation = async () => {

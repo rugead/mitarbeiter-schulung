@@ -18,13 +18,14 @@ export const AuthContext = createContext()
 export const AuthContextProvider = props => {
   const [user, setUser] = useState()
   const [error, setError] = useState()
+  const [userData, setUserData]= useState()
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(getAuth(), setUser, setError)
+    const unsubscribe = onAuthStateChanged(getAuth(), setUser, setUserData, setError)
     return () => unsubscribe()
   }, [user])
   
-  return <AuthContext.Provider value={{ user, error }} {...props} />
+  return <AuthContext.Provider value={{ user, userData, error }} {...props} />
 }
 
 
@@ -33,14 +34,14 @@ export const AuthContextProvider = props => {
 
 
 export function useUser() {
-  const {user, error} = useContext(AuthContext)
+  const {user, userData, error} = useContext(AuthContext)
   // const docRef = doc((getFirestore(), "users", user.id))
   // const docSnap =  getDoc(docRef);
   // const userData= docSnap.exists() ? docSnap.data() :  console.log("No such document!")
   // console.log('userData: ', userData);
 
   // console.log('useCurrentUser firebase: ', user, error)
-  return { user, error }
+  return { user, error, userData }
 }
 
 

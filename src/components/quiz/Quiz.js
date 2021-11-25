@@ -1,6 +1,6 @@
 import React, { useEffect, useState }  from 'react';
 import { useParams } from 'react-router';
-import { getDoc, doc, collection, addDoc, serverTimestamp } from '@firebase/firestore';
+import { getDoc, doc, collection, addDoc, Timestamp } from '@firebase/firestore';
 
 import {  useUser, db } from '../../firebase'
 // import { getUserData } from '../user';
@@ -110,7 +110,7 @@ export const Quiz = (props) => {
     userId: user.uid,
     userEmail: user.email,
     createdAt: new Date(Date.now()),
-
+    Timestamp: Timestamp.fromDate(new Date.now()),
   };
 
   const submitConfirmation = async () => {

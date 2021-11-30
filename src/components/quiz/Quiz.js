@@ -2,28 +2,27 @@ import React, { useEffect, useState }  from 'react';
 import { useParams } from 'react-router';
 import { getDoc, doc, collection, addDoc, Timestamp } from '@firebase/firestore';
 
-import {  useUser, db } from '../../firebase'
-// import { getUserData } from '../user';
+import { useUser, db } from '../../firebase'
 import { dataSet} from "../data/"
 import { QuizArea, ScoreArea } from './QuizFunctions';
 import { H4} from '../Headline'
+import { DialogConfirmNumber } from '../DialogConfirmNumber'
 
 export const Quiz = (props) => {
   const { user } = useUser()
+  const { indexOfItem } = useParams()
+
   const [userData, setUserData]= useState()
-  console.log('userData: ', userData);
-  const { indexOfItem} = useParams()
   const [currentQuestion, setCurrentQuestion] = useState(0)
   const [correctScore, setCorrectScore] = useState(0)
   const [incorrectScore, setIncorrectScore] = useState(0)
   const [clickedAnswers, setClickedAnswers] = useState({})
+  const [personalnummer, setPersonalnummer] = useState('')
   
-  // const [userData, setUserData] =useState()
+  const [dialogIsOpen, setDialogIsOpen] = useState(false)
   const title = dataSet[indexOfItem].title
-  
   const questions = dataSet[indexOfItem].questions
-  const question = questions[currentQuestion]
-  
+  const question = questions[currentQuestion]  
   
   console.log(
     'userData: ', userData,
@@ -36,18 +35,18 @@ export const Quiz = (props) => {
     'false: ', incorrectScore, 
     'true: ', correctScore,
     'title: ', title,
-    );
+  );
 
-    useEffect(() => {
-      const getUserData = async () => {
-        if (!user) return 
-        const docRef = doc(db, "users", user.uid)
-        const docSnap = await getDoc(docRef);
-        const userDoc = docSnap.data()
-        setUserData(userDoc)        
-        }
-       getUserData()
-    }, [user])
+  useEffect(() => {
+    const getUserData = async () => {
+      if (!user) return 
+      const docRef = doc(db, "users", user.uid)
+      const docSnap = await getDoc(docRef);
+      const userDoc = docSnap.data()
+      setUserData(userDoc)        
+      }
+      getUserData()
+  }, [user])
   
   useEffect(() => {
     let correct = 0 
@@ -106,8 +105,8 @@ export const Quiz = (props) => {
     courseId: dataSet[indexOfItem].courseId,
     category: dataSet[indexOfItem].categories,
     showing: dataSet[indexOfItem].showing,
-    personalnummer_user: 'personalnummer-u',
-    personalnummer_confirmation: 'personalnummer-c',
+    personalnummer_user: userData ? userData.personalnummer : '',
+    personalnummer_lesson: personalnummer,
     userDisplayName: user.displayName,
     userId: user.uid,
     userEmail: user.email,
@@ -115,13 +114,29 @@ export const Quiz = (props) => {
     Timestamp: Timestamp.fromDate(new Date(Date.now())),
   };
 
-  const submitConfirmation = async () => {
+  const onChangeHandler = (ev) => {
+    const { name, value } = ev.currentTarget
+    if (name === 'personalnummer') setPersonalnummer(value)
+  }
+
+  
+  const submitLesson = async () => {
+    
     const docRef = await addDoc(collection(db, "lessons"), lessonProps);
     console.log('docRef: ', docRef);
+    // docRef
+    setDialogIsOpen(false)
   }
 
   return(
     <div className="flex justify-around">  
+      <DialogConfirmNumber 
+        isOpen={dialogIsOpen} 
+        setIsOpen={setDialogIsOpen} 
+        submitConfirmation={submitLesson} 
+        onChangeHandler={onChangeHandler}
+      />
+
       <div className="w-5/6">
         <H4>{currentQuestion + 1}. von {questions.length} Fragen zur {renderTitle.join(" / ")}</H4>
         <div className={`w-full bg-gray-50 rounded-lg shadow-lg`} >
@@ -140,13 +155,15 @@ export const Quiz = (props) => {
     
           <div
             className="p-3 flex-1 text-primary hover:bg-primary text-lg font-medium text-center mt-5  border border-primary cursor-pointer hover:text-gray-100 rounded-md" 
-            onClick={()=> prevQuestion()}>
+            onClick={()=> prevQuestion()}
+          >
             prev
-              </div>
+          </div>
           <div 
             className="p-3 ml-3 flex-1 text-primary hover:bg-primary text-lg font-medium text-center mt-5  border border-primary cursor-pointer hover:text-gray-100 rounded-md"
-            onClick={()=> newStart()}>
-              refresh
+            onClick={()=> newStart()}
+          >
+            refresh
           </div>
 
           <div 
@@ -158,13 +175,14 @@ export const Quiz = (props) => {
 
           <div
             className="p-3  ml-3 flex-1 text-primary hover:bg-primary text-lg font-medium text-center mt-5  border border-primary cursor-pointer hover:text-gray-100 rounded-md" 
-            onClick={()=> nextQuestion()}>
+            onClick={()=> nextQuestion()}
+          >
             next
           </div>
           { (questions.length === correctScore) ?
             <div
               className="p-3  ml-3 flex-1 text-white hover:bg-primary bg-green-500 text-lg font-medium text-center mt-5  border border-gray-500 cursor-pointer hover:text-gray-100 rounded-md" 
-              onClick={()=> submitConfirmation()}
+              onClick={()=> setDialogIsOpen(true)}
             >
               submitConfirmation
             </div>

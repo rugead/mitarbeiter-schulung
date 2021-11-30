@@ -3,7 +3,7 @@ import { Dialog, Transition } from '@headlessui/react'
 import { InputField } from './InputField'
 
 
-const DialogConfirmNumber = (props) => {
+export const DialogConfirmNumber = (props) => {
   const {isOpen, onChangeHandler, setIsOpen, submitConfirmation } = props
 
 
@@ -85,6 +85,3 @@ const DialogConfirmNumber = (props) => {
     </Transition>
   );
 }
- 
-export default DialogConfirmNumber;
-

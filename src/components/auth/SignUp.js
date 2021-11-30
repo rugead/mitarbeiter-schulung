@@ -1,5 +1,6 @@
 import { useState } from 'react'
-import { getAuth, updateProfile, createUserWithEmailAndPassword, sendEmailVerification } from 'firebase/auth'
+import { useHistory } from 'react-router-dom'
+import { getAuth, signOut,  updateProfile, createUserWithEmailAndPassword, sendEmailVerification } from 'firebase/auth'
 import { signUpWithGoogle } from '../../provider'
 import { DialogOverlay } from '../DialogOverlay'
 import { Button } from "../Button"
@@ -9,6 +10,7 @@ import { createUserData } from '../user'
 
 export const SignUp = () => {
   const auth = getAuth()
+  const history = useHistory()
   
   const [dialogIsOpen, setDialogIsOpen] = useState(false)
   const [dialogTitle, setDialogTitle] = useState('Error')
@@ -47,6 +49,8 @@ export const SignUp = () => {
     .then(() => sendEmailVerification( auth.currentUser ))
     .then(() => updateProfile(auth.currentUser, {displayName: name, personalnummer})
     .then(() => createUserData(auth.currentUser, {personalnummer}))
+    .then(() => signOut(auth))
+    .then(()=> history.push('/verify-email-address'))
     )
     .catch((err) => {
       setDialogTitle('Sign up error')

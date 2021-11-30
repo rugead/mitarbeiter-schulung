@@ -7,7 +7,7 @@ import { useUser } from '../../firebase'
 export const VerifyEmailAddress = () => {
   const { user } = useUser()
   const history = useHistory()
-
+  
   const resendEmailVerification = (ev) => {
     ev.preventDefault()
     
@@ -16,6 +16,7 @@ export const VerifyEmailAddress = () => {
     .then(alert('email sent'))
   }
   
+  console.log('user: ', user);
   const Please = () => {
     return (
       <div>
@@ -24,6 +25,7 @@ export const VerifyEmailAddress = () => {
           label="resent email"
           onClick={resendEmailVerification}
           />
+          {user?.emailVerified}
           Bitte Email Adresse bestätigen
       </div>
     )
@@ -32,7 +34,8 @@ export const VerifyEmailAddress = () => {
   return (
     <div className="bg-green-100 flex justify-between p-5">
       {
-        user && user.emailVerified ? 
+        user && user.emailVerified
+        ? 
           <Redirect to='/courses' />
         :
          <Please />        

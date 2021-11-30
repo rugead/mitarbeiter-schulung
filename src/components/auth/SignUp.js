@@ -39,6 +39,8 @@ export const SignUp = () => {
   
   const signUpWithEmail = async(ev) => {
     ev.preventDefault()
+
+    
     if (password !== passwordConfirm) {
       setDialogTitle('Password missmatch')
       setDialogDescription('Die Passwörter stimmen nicht überein.')
@@ -46,11 +48,20 @@ export const SignUp = () => {
       return
     }
     createUserWithEmailAndPassword(auth, email, password)
-    .then(() => sendEmailVerification( auth.currentUser ))
+    .then((x) => {
+      console.log('auth: ', x.user.email,  ' ### ',auth.currentUser)
+      const actionCodeSettings = {
+        url: 'http://192.168.178.40:3000/?email=rudolf.vogel@icando.de',
+        handleCodeInApp: false,
+        dynamicLinkDomain: 'abc.icando.de'
+      }
+      
+      sendEmailVerification( auth.currentUser, actionCodeSettings )
+    })
     .then(() => updateProfile(auth.currentUser, {displayName: name, personalnummer})
     .then(() => createUserData(auth.currentUser, {personalnummer}))
-    .then(() => signOut(auth))
-    .then(()=> history.push('/verify-email-address'))
+    // .then(() => signOut(auth))
+    // .then(()=> history.push('/verify-email-address'))
     )
     .catch((err) => {
       setDialogTitle('Sign up error')
